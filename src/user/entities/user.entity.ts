@@ -1,0 +1,40 @@
+import { Exclude, Expose } from "class-transformer";
+import { ModelEntity } from "src/global/model.entity";
+import { TourEntity } from "src/tour/entities/tour.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+
+@Entity('users')
+export class UserEnity extends ModelEntity{
+    @PrimaryGeneratedColumn()
+    id:number;
+
+    @Column()
+    firstname:string;
+
+    @Column()
+    lastname:string;
+
+    @Unique(['email'])
+    @Column()
+    email: string;
+
+    @Exclude()
+    @Column()
+    password: string
+
+    @Column({default: true})
+    isActive: boolean;
+
+    @OneToMany(()=>TourEntity, (tour)=>tour.guide)
+    users: UserEnity[]
+
+    constructor(partial: Partial<UserEnity>) {
+        super()
+        Object.assign(this, partial)
+      }
+    
+      @Expose()
+      get fullName(): string {
+        return `${this.firstname} ${this.lastname}`
+      }
+}
