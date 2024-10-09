@@ -11,14 +11,10 @@ export class TourEntity extends ModelEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @IsNotEmpty()
-    @Type(()=>Date)
-    @IsDate()
+    @Column()
     startDate: Date;
 
-    @IsNotEmpty()
-    @Type(()=>Date)
-    @IsDate()
+    @Column()
     endDate: Date;
 
     @Column()

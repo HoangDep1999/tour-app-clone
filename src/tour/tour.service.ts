@@ -1,21 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTourDto } from './dto/create-tour.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { TourDto } from './dto/tour.dto';
+import { TourEntity } from './entities/tour.entity';
+import { TourRepository } from './tour.repository';
 
 @Injectable()
 export class TourService {
-  create(createTourDto: CreateTourDto) {
-    return 'This action adds a new tour';
+  constructor(
+    @Inject('TourRepository')
+    private readonly tourRepository: TourRepository,
+    
+  ){}
+  async create(tourDto: TourDto) : Promise<TourEntity>{
+    return await this.tourRepository.create(tourDto);
   }
 
-  findAll() {
-    return `This action returns all tour`;
+  async findAll(): Promise<TourEntity[]> {
+    return this.tourRepository.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tour`;
+    return this.tourRepository.findById(+id);
   }
 
-  update(id: number, createTourDto: CreateTourDto) {
+  update(id: number, tourDto: TourDto) {
     return `This action updates a #${id} tour`;
   }
 

@@ -1,29 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { TourService } from './tour.service';
-import { CreateTourDto } from './dto/create-tour.dto';
+import { TourDto } from './dto/tour.dto';
+import { TourEntity } from './entities/tour.entity';
 
 @Controller('tour')
 export class TourController {
   constructor(private readonly tourService: TourService) {}
 
   @Post()
-  create(@Body() createTourDto: CreateTourDto) {
-    return this.tourService.create(createTourDto);
+  async create(@Body() tourDto: TourDto): Promise<TourEntity> {
+    console.log(tourDto);
+    
+    return this.tourService.create(tourDto);
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<TourEntity[]> {
     return this.tourService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.tourService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() createTourDto: CreateTourDto) {
-    return this.tourService.update(+id, createTourDto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() tourDto: TourDto) {
+    return this.tourService.update(+id, tourDto);
   }
 
   @Delete(':id')
